@@ -104,7 +104,15 @@ public class EncomendaService {
         CepDTO cepOrigem = findCep(encomendaDTO.getCepOrigem());
         CepDTO cepDestino = findCep(encomendaDTO.getCepDestino());
 
-        Double valorFrete = encomendaDTO.getPeso() * 1.45;
+        Double valorFrete;
+        double peso = encomendaDTO.getPeso();
+        double taxaBase = 1.45;
+
+        if (peso <= 1.0) {
+            valorFrete = (peso * taxaBase) * 0.9;
+        } else {
+            valorFrete = peso * taxaBase;
+        }
 
         if (cepOrigem.getDdd() != null && cepDestino.getDdd() != null && cepOrigem.getDdd().equals(cepDestino.getDdd())) {
             dataPrevista = LocalDate.now().plusDays(1);
